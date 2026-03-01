@@ -1,113 +1,288 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyBusinessCard());
+  runApp(const GalleryApp());
 }
 
-class MyBusinessCard extends StatelessWidget {
-  const MyBusinessCard({super.key});
+class GalleryApp extends StatelessWidget {
+  const GalleryApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('My Digital Card'),
-          backgroundColor: Colors.blueGrey[400],
-          centerTitle: true,
+      title: 'Gallery Application',
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      home: const WelcomeScreen(),
+    );
+  }
+}
+
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Gallery Application'),
+        backgroundColor: Colors.blue.shade700,
+        centerTitle: true,
+        elevation: 5,
+      ),
+      backgroundColor: Colors.blue.shade50,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Title
+                Text(
+                  'Welcome',
+                  style: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue.shade900,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'To the gallery application',
+                  style: TextStyle(fontSize: 18, color: Colors.blue.shade700),
+                ),
+                const SizedBox(height: 48),
+
+                TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your name here',
+                    labelText: 'Your Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(Icons.person),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                ElevatedButton(
+                  onPressed: () {
+                    if (_nameController.text.isNotEmpty) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              GalleryScreen(userName: _nameController.text),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter your name'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue.shade700,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 48,
+                      vertical: 16,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    'Start',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        backgroundColor: Colors.blueGrey[800],
-        body: SafeArea(
+      ),
+    );
+  }
+}
+
+class GalleryScreen extends StatefulWidget {
+  final String userName;
+
+  const GalleryScreen({super.key, required this.userName});
+
+  @override
+  State<GalleryScreen> createState() => _GalleryScreenState();
+}
+
+class _GalleryScreenState extends State<GalleryScreen> {
+  int currentIndex = 0;
+
+  final List<GalleryItem> galleryItems = [
+    GalleryItem(
+      image: 'assets/images/gallery1.jpg',
+      description: 'Beautiful Modern Architecture',
+    ),
+    GalleryItem(
+      image: 'assets/images/gallery2.jpg',
+      description: 'Scenic Nature Landscape',
+    ),
+    GalleryItem(
+      image: 'assets/images/gallery3.jpg',
+      description: 'Peaceful Mountain View',
+    ),
+  ];
+
+  void _nextImage() {
+    if (currentIndex < galleryItems.length - 1) {
+      setState(() {
+        currentIndex++;
+      });
+    }
+  }
+
+  void _previousImage() {
+    if (currentIndex > 0) {
+      setState(() {
+        currentIndex--;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Welcome ${widget.userName}'),
+        backgroundColor: Colors.blue.shade700,
+        centerTitle: true,
+        elevation: 5,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      backgroundColor: Colors.blue.shade50,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 85.0,
-                backgroundImage: AssetImage('assets/images/personal.jpg'),
-              ),
-              SizedBox(height: 75),
-              const Text(
-                'RANA HASSAN Al- YAMY',
-                style: TextStyle(
-                  fontFamily: 'Cairo',
-                  fontSize: 28.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               Text(
-                'Specialization: Information Systems',
+                'Welcome (${widget.userName})',
                 style: TextStyle(
-                  color: Colors.indigo.shade100,
-                  fontSize: 18.0,
-
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Colors.blue.shade900,
                 ),
+                textAlign: TextAlign.center,
               ),
-              SizedBox(
-                height: 20.0,
-                width: 150.0,
-                child: Divider(color: Colors.indigo.shade100),
-              ),
+              const SizedBox(height: 32),
 
-              Card(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 25.0,
-                ),
-                child: ListTile(
-                  leading: const Icon(Icons.phone, color: Colors.indigo),
-                  title: Text(
-                    '+966 500 000 000',
-                    style: TextStyle(
-                      color: Colors.indigo.shade900,
-                      fontSize: 18.0,
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      spreadRadius: 2,
                     ),
-                  ),
-                  trailing: const Icon(Icons.call, color: Colors.indigo),
+                  ],
                 ),
-              ),
-
-              Card(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 25.0,
-                ),
-                child: ListTile(
-                  leading: const Icon(Icons.email, color: Colors.indigo),
-                  title: Text(
-                    'abcd@nu.edu.sa',
-                    style: TextStyle(
-                      color: Colors.indigo.shade900,
-                      fontSize: 18.0,
-                    ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    galleryItems[currentIndex].image,
+                    height: 300,
+                    width: 300,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
 
-              Card(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 25.0,
+              Text(
+                galleryItems[currentIndex].description,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.blue.shade700,
+                  fontWeight: FontWeight.w500,
                 ),
-                child: ListTile(
-                  leading: const Icon(Icons.school, color: Colors.indigo),
-                  title: Text(
-                    'Najran University - جامعة نجران',
-                    style: TextStyle(
-                      color: Colors.indigo.shade900,
-                      fontSize: 18.0,
+              ),
+              const SizedBox(height: 24),
+
+              Text(
+                'Image ${currentIndex + 1} of ${galleryItems.length}',
+                style: TextStyle(fontSize: 14, color: Colors.blue.shade600),
+              ),
+              const SizedBox(height: 32),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: currentIndex > 0 ? _previousImage : null,
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('Back'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade700,
+                      disabledBackgroundColor: Colors.grey.shade300,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
-                  subtitle: Text(
-                    'ID: 442408485',
-                    style: TextStyle(
-                      color: Colors.indigo.shade700,
-                      fontSize: 14.0,
+                  const SizedBox(width: 24),
+
+                  ElevatedButton.icon(
+                    onPressed: currentIndex < galleryItems.length - 1
+                        ? _nextImage
+                        : null,
+                    icon: const Icon(Icons.arrow_forward),
+                    label: const Text('Next'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade700,
+                      disabledBackgroundColor: Colors.grey.shade300,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
@@ -115,4 +290,11 @@ class MyBusinessCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class GalleryItem {
+  final String image;
+  final String description;
+
+  GalleryItem({required this.image, required this.description});
 }
