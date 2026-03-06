@@ -1,18 +1,67 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const GalleryApp());
+  runApp(const DesertGallery());
 }
 
-class GalleryApp extends StatelessWidget {
-  const GalleryApp({super.key});
+class DesertGallery extends StatelessWidget {
+  const DesertGallery({super.key});
 
   @override
   Widget build(BuildContext context) {
+    const background = Color(0xFFFFF6EC);
+    const primary = Color(0xFF8A4B2A);
+    const secondary = Color(0xFFD6864A);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Gallery Application',
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: primary,
+          primary: primary,
+          secondary: secondary,
+          surface: Colors.white,
+        ),
+        scaffoldBackgroundColor: background,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Color(0xFF4D2A18),
+          elevation: 0,
+          centerTitle: true,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide(color: primary.withValues(alpha: 0.15)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide(color: primary.withValues(alpha: 0.15)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: primary, width: 1.5),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primary,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+      ),
       home: const WelcomeScreen(),
     );
   }
@@ -36,14 +85,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const titleColor = Color(0xFF4D2A18);
+    const subtitleColor = Color(0xFF8A4B2A);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gallery Application'),
-        backgroundColor: Colors.blue.shade700,
-        centerTitle: true,
-        elevation: 5,
-      ),
-      backgroundColor: Colors.blue.shade50,
+      appBar: AppBar(title: const Text('Desert Gallery')),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -51,33 +97,34 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Title
+                const Icon(
+                  Icons.system_update_tv_outlined,
+                  size: 68,
+                  color: Color(0xFFD6864A),
+                ),
+                const SizedBox(height: 18),
                 Text(
                   'Welcome',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue.shade900,
+                    color: titleColor,
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(
-                  'To the gallery application',
-                  style: TextStyle(fontSize: 18, color: Colors.blue.shade700),
+                const Text(
+                  'Discover our stunning desert collection',
+                  style: TextStyle(fontSize: 17, color: subtitleColor),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 48),
 
                 TextField(
                   controller: _nameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Enter your name here',
                     labelText: 'Your Name',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    prefixIcon: const Icon(Icons.person),
-                    filled: true,
-                    fillColor: Colors.white,
+                    prefixIcon: Icon(Icons.person_outline_rounded),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -95,28 +142,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Please enter your name'),
-                          backgroundColor: Colors.red,
+                          backgroundColor: Color(0xFF8A4B2A),
                         ),
                       );
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade700,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 48,
-                      vertical: 16,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
                   child: const Text(
-                    'Start',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                    'Start Exploring',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -142,16 +175,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   final List<GalleryItem> galleryItems = [
     GalleryItem(
-      image: 'assets/images/gallery1.jpg',
-      description: 'Beautiful Modern Architecture',
+      image: 'assets/images/dessert1.png',
+      description: 'Golden dunes under a soft sunset glow',
     ),
     GalleryItem(
-      image: 'assets/images/gallery2.jpg',
-      description: 'Scenic Nature Landscape',
+      image: 'assets/images/dessert2.png',
+      description: 'A vast sandy horizon with calm ambiance',
     ),
     GalleryItem(
-      image: 'assets/images/gallery3.jpg',
-      description: 'Peaceful Mountain View',
+      image: 'assets/images/dessert3.png',
+      description: 'Desert landscape with warm earthy colors',
     ),
   ];
 
@@ -173,12 +206,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const titleColor = Color(0xFF4D2A18);
+    const subtitleColor = Color(0xFF8A4B2A);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome ${widget.userName}'),
-        backgroundColor: Colors.blue.shade700,
-        centerTitle: true,
-        elevation: 5,
+        title: Text('Hi ${widget.userName}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -186,7 +219,6 @@ class _GalleryScreenState extends State<GalleryScreen> {
           },
         ),
       ),
-      backgroundColor: Colors.blue.shade50,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -194,11 +226,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Welcome (${widget.userName})',
-                style: TextStyle(
+                'Desert Picks for ${widget.userName}',
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue.shade900,
+                  color: titleColor,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -206,17 +238,18 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      spreadRadius: 2,
+                      color: Colors.brown.withValues(alpha: 0.12),
+                      blurRadius: 18,
+                      spreadRadius: 1,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     galleryItems[currentIndex].image,
                     height: 300,
@@ -227,19 +260,30 @@ class _GalleryScreenState extends State<GalleryScreen> {
               ),
               const SizedBox(height: 24),
 
-              Text(
-                galleryItems[currentIndex].description,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.blue.shade700,
-                  fontWeight: FontWeight.w500,
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  galleryItems[currentIndex].description,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: subtitleColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 18),
 
               Text(
                 'Image ${currentIndex + 1} of ${galleryItems.length}',
-                style: TextStyle(fontSize: 14, color: Colors.blue.shade600),
+                style: const TextStyle(fontSize: 16, color: subtitleColor),
               ),
               const SizedBox(height: 32),
 
@@ -251,15 +295,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     icon: const Icon(Icons.arrow_back),
                     label: const Text('Back'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade700,
-                      disabledBackgroundColor: Colors.grey.shade300,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                      disabledBackgroundColor: const Color(0xFFEADFD6),
                     ),
                   ),
                   const SizedBox(width: 24),
@@ -271,15 +307,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     icon: const Icon(Icons.arrow_forward),
                     label: const Text('Next'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade700,
-                      disabledBackgroundColor: Colors.grey.shade300,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                      disabledBackgroundColor: const Color(0xFFEADFD6),
                     ),
                   ),
                 ],
